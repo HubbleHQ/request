@@ -134,6 +134,66 @@ describe('core : helpers : request : ', () => {
     );
   });
 
+  it('should convert the body to search params for GET requests', async () => {
+    fetch.mockResponse('sample response - value is irrelevant');
+    expect(fetch).not.toHaveBeenCalled();
+
+    const body = { key: 'some value', key2: 182 };
+    const expectedUrl = new URL(url);
+
+    expectedUrl.searchParams.append('key', body.key);
+    expectedUrl.searchParams.append('key2', body.key2);
+
+    await request(url, 'GET', body);
+
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledWith(
+      expectedUrl.toString(),
+      expect.objectContaining({
+        method: 'GET',
+      }),
+    );
+  });
+
+  it('should append new search params to existing ones', async () => {
+    fetch.mockResponse('sample response - value is irrelevant');
+    expect(fetch).not.toHaveBeenCalled();
+
+    const urlWithParams = `${url}?param=1`;
+    const body = { key: 'some value', key2: 182 };
+    const expectedUrl = new URL(urlWithParams);
+
+    expectedUrl.searchParams.append('key', body.key);
+    expectedUrl.searchParams.append('key2', body.key2);
+
+    await request(urlWithParams, 'GET', body);
+
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledWith(
+      expectedUrl.toString(),
+      expect.objectContaining({
+        method: 'GET',
+      }),
+    );
+  });
+
+  it('should not contain a body if method is GET', async () => {
+    fetch.mockResponse('sample response - value is irrelevant');
+    expect(fetch).not.toHaveBeenCalled();
+
+    const body = { limb: 'foo' };
+
+    await request(url, 'GET', body);
+
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.not.objectContaining({
+        body,
+      }),
+    );
+  });
+
   describe('non-error responses : ', () => {
     it('should turn a JSON response into a JavaScript object', async () => {
       const expectedResponse = {

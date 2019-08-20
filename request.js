@@ -31,6 +31,26 @@ const getBody = async response => {
 };
 
 /**
+ * Derives a url string to use in `fetch`
+ *
+ * @param {String} urlArg - the url
+ * @param {String} method - the method to use (GET, POST, etc.)
+ * @param {Object|String} body - the content to send
+ * @private
+ */
+const getUrl = (urlArg, method, body = {}) => {
+  const url = new URL(urlArg);
+
+  if (method.toLowerCase() === 'get') {
+    Object.entries(body).forEach(([key, value]) => {
+      url.searchParams.append(key, value);
+    });
+  }
+
+  return url.toString();
+};
+
+/**
  * Creates an error object from the response.
  *
  * @param {Response} response a `fetch` `Response` object
@@ -73,7 +93,7 @@ const createResponse = async response => {
 const getOptions = (method, body, opts) => {
   const sendableOptions = { headers: {}, method, ...opts };
 
-  if (typeof body === 'undefined') {
+  if (typeof body === 'undefined' || method.toLowerCase() === 'get') {
     return sendableOptions;
   }
 
@@ -114,8 +134,9 @@ const getOptions = (method, body, opts) => {
  * @return {Promise<module:request.ValidResponse>} a promise, resolving to a valid, non-error response object.
  * @memberof module:request
  */
-const request = async (url, method = 'GET', body = undefined, opts = {}) => {
+const request = async (urlArg, method = 'GET', body = undefined, opts = {}) => {
   const sendableOptions = getOptions(method, body, opts);
+  const url = getUrl(urlArg, method, body);
 
   let response;
   try {
