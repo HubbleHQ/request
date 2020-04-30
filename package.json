@@ -5,5 +5,8 @@
   "main": "dist/index.js",
   "repository": "https://github.com/HubbleHQ/request",
   "author": "HubbleHQ Engineering <tech@hubblehq.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "isomorphic-unfetch": "^3.0.0"
+  }
 }
