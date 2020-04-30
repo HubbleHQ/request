@@ -35,6 +35,11 @@
     "prettier": "^2.0.5",
     "regenerator-runtime": "^0.13.5"
   },
+  "engines": {
+    "node": "^12.16.3",
+    "npm": "^6.13.4",
+    "yarn": "^1.21.1"
+  },
   "jest": {
     "automock": false,
     "reporters": [
@@ -46,6 +51,13 @@
     ],
     "setupFilesAfterEnv": [
       "./.jest/setup.js"
+    ]
+  },
+  "lint-staged": {
+    "**/*.js": [
+      "prettier --write",
+      "eslint",
+      "git add"
     ]
   }
 }
