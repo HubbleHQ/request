@@ -7,7 +7,9 @@
   "author": "HubbleHQ Engineering <tech@hubblehq.com>",
   "license": "MIT",
   "scripts": {
-    "build": "babel src -d dist"
+    "build": "babel src -d dist",
+    "docs:build": "jsdoc -c jsdoc-conf.json",
+    "docs:start": "http-server ./docs -r"
   },
   "dependencies": {
     "isomorphic-unfetch": "^3.0.0"
@@ -15,6 +17,9 @@
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.6",
-    "@babel/preset-env": "^7.9.6"
+    "@babel/preset-env": "^7.9.6",
+    "http-server": "^0.11.1",
+    "jsdoc": "^3.5.5",
+    "jsdoc-template": "git+https://github.com/braintree/jsdoc-template.git"
   }
 }
