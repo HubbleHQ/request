@@ -2,6 +2,8 @@
 
 A simple, universal, no-frills networking library
 
+[View the docs](https://hubblehq.github.io/request)
+
 ## Installing
 
 Install with:
