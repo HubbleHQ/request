@@ -6,7 +6,7 @@ A simple, universal, no-frills networking library
 
 ## Installing
 
-Install with:
+Install in your project with:
 
 ```shell
 npm install @hubble/request
