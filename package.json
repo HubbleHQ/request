@@ -10,6 +10,9 @@
     "build": "babel src -d dist",
     "docs:build": "jsdoc -c jsdoc-conf.json",
     "docs:start": "http-server ./docs -r",
+    "format": "prettier \"./src/**/*.{js,json}\" --write",
+    "lint": "yarn lint:format",
+    "lint:format": "prettier \"./src/**/*.{js,json}\" --check",
     "start": "yarn build --watch"
   },
   "dependencies": {
@@ -21,6 +24,7 @@
     "@babel/preset-env": "^7.9.6",
     "http-server": "^0.11.1",
     "jsdoc": "^3.5.5",
-    "jsdoc-template": "git+https://github.com/braintree/jsdoc-template.git"
+    "jsdoc-template": "git+https://github.com/braintree/jsdoc-template.git",
+    "prettier": "^2.0.5"
   }
 }

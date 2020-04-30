@@ -17,7 +17,7 @@ import ValidResponse from './ValidResponse';
  * @memberof module:request
  * @private
  */
-const getBody = async response => {
+const getBody = async (response) => {
   const contentType = response.headers.get('Content-Type');
 
   let body;
@@ -58,7 +58,7 @@ const getUrl = (urlArg, method, body = {}) => {
  * @memberof module:request
  * @private
  */
-const createError = async response => {
+const createError = async (response) => {
   const body = await getBody(response);
 
   return new HttpError(
@@ -76,7 +76,7 @@ const createError = async response => {
  * @memberof module:request
  * @private
  */
-const createResponse = async response => {
+const createResponse = async (response) => {
   const body = await getBody(response);
 
   return new ValidResponse(response, body);
