@@ -14,7 +14,8 @@
     "lint": "yarn lint:eslint && yarn lint:format",
     "lint:eslint": "eslint .",
     "lint:format": "prettier \"./src/**/*.{js,json}\" --check",
-    "start": "yarn build --watch"
+    "start": "yarn build --watch",
+    "test": "jest"
   },
   "dependencies": {
     "isomorphic-unfetch": "^3.0.0"
@@ -25,8 +26,26 @@
     "@babel/preset-env": "^7.9.6",
     "eslint": "^6.8.0",
     "http-server": "^0.11.1",
+    "jest": "^25.5.2",
+    "jest-fetch-mock": "^2.1.2",
+    "jest-junit": "^10.0.0",
     "jsdoc": "^3.5.5",
     "jsdoc-template": "git+https://github.com/braintree/jsdoc-template.git",
-    "prettier": "^2.0.5"
+    "lint-staged": "^8.1.6",
+    "prettier": "^2.0.5",
+    "regenerator-runtime": "^0.13.5"
+  },
+  "jest": {
+    "automock": false,
+    "reporters": [
+      "default",
+      "jest-junit"
+    ],
+    "roots": [
+      "<rootDir>/src/"
+    ],
+    "setupFilesAfterEnv": [
+      "./.jest/setup.js"
+    ]
   }
 }
