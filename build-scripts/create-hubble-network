@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+if [ ! $(docker network ls | grep --only-matching hubble-network) ];then
+  docker network create hubble-network
+fi

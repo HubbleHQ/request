@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+
+existing_hooks=$(ls -F .git/hooks | grep -v '[/@=]$' | tr -d '*')
+new_hooks=$(ls -1 git-hooks/)
+
+for git_hook in $existing_hooks; do
+  for new_hook in $new_hooks; do
+    if [ "${new_hook}" = "${git_hook}" ]; then
+      echo "Renaming existing git hook to ${git_hook}.old"
+      mv ".git/hooks/${git_hook}" ".git/hooks/${git_hook}.old"
+    fi
+  done
+done
+
+for git_hook in $new_hooks; do
+  echo "Linking in new git hook: ${git_hook}"
+  ln -sf "../../git-hooks/${git_hook}" ".git/hooks/${git_hook}"
+done
