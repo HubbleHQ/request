@@ -1,0 +1,272 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>
+      request.js - Documentation
+  </title>
+
+  <link href="https://www.braintreepayments.com/images/favicon-ccda0b14.png" rel="icon" type="image/png">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+  <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+  <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+  
+
+  
+
+  <!-- start Mixpanel -->
+  <script type="text/javascript">(function(e,a){if(!a.__SV){var b=window;try{var c,l,i,j=b.location,g=j.hash;c=function(a,b){return(l=a.match(RegExp(b+"=([^&]*)")))?l[1]:null};g&&c(g,"state")&&(i=JSON.parse(decodeURIComponent(c(g,"state"))),"mpeditor"===i.action&&(b.sessionStorage.setItem("_mpcehash",g),history.replaceState(i.desiredHash||"",e.title,j.pathname+j.search)))}catch(m){}var k,h;window.mixpanel=a;a._i=[];a.init=function(b,c,f){function e(b,a){var c=a.split(".");2==c.length&&(b=b[c[0]],a=c[1]);b[a]=function(){b.push([a].concat(Array.prototype.slice.call(arguments,
+  0)))}}var d=a;"undefined"!==typeof f?d=a[f]=[]:f="mixpanel";d.people=d.people||[];d.toString=function(b){var a="mixpanel";"mixpanel"!==f&&(a+="."+f);b||(a+=" (stub)");return a};d.people.toString=function(){return d.toString(1)+".people (stub)"};k="disable time_event track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config reset people.set people.set_once people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");
+  for(h=0;h<k.length;h++)e(d,k[h]);a._i.push([b,c,f])};a.__SV=1.2;b=e.createElement("script");b.type="text/javascript";b.async=!0;b.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";c=e.getElementsByTagName("script")[0];c.parentNode.insertBefore(b,c)}})(document,window.mixpanel||[]);
+  mixpanel.init("1919205b2da72e4da3b9b6639b444d59");</script>
+  <!-- end Mixpanel -->
+</head>
+
+<body>
+  <svg style="display: none;">
+    <defs>
+      <symbol id="linkIcon" fill="#706d77" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0h24v24H0z" fill="none"/>
+          <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+  <label for="nav-trigger" class="navicon-button x">
+    <div class="navicon"></div>
+  </label>
+
+  <label for="nav-trigger" class="overlay"></label>
+
+  <div class="top-nav-wrapper">
+    <ul>
+      <li >
+        <a href="index.html">
+          
+            <svg fill="#6D6D6D" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+              <path d="M0 0h24v24H0z" fill="none"/>
+            </svg>
+          
+          
+        </a>
+      </li>
+
+      
+
+    </ul>
+  </div>
+
+  <nav>
+    <h3 class="reference-title">
+      @hubblehq/request
+    </h3>
+
+    
+
+    <h3>Classes</h3><ul><li id="HttpError-nav"><a href="module-request.HttpError.html">HttpError</a></li><li id="NetworkError-nav"><a href="module-request.NetworkError.html">NetworkError</a></li><li id="ValidResponse-nav"><a href="module-request.ValidResponse.html">ValidResponse</a></li></ul><h3>Modules</h3><ul><li id="request-nav"><a href="module-request.html">request</a><ul class='methods'><li data-type="method" id="request-request-nav"><a href="module-request.html#.request">request</a></li></ul></li></ul>
+  </nav>
+
+  <div id="main">
+    
+      <h1 class="page-title">
+        request.js
+      </h1>
+    
+
+    
+      
+
+<section>
+  <article>
+    <pre class="prettyprint source linenums"><code>import 'isomorphic-unfetch';
+
+import HttpError from './HttpError';
+import NetworkError from './NetworkError';
+import ValidResponse from './ValidResponse';
+
+/**
+ * @module request
+ */
+
+/**
+ * Gets the body of a response. If the response has a `Content-Type` header set to `application/json`, it will parse the body as JSON and return the result.
+ *
+ * NOTE: running this function will lock the response body. It will be impossible to re-read the response. **It should only ever be run on a `Response` object one time.**
+ *
+ * @param {Response} response a `fetch` `Response` object
+ * @memberof module:request
+ * @private
+ */
+const getBody = async (response) => {
+  const contentType = response.headers.get('Content-Type');
+
+  let body;
+  if (contentType &amp;&amp; contentType.includes('application/json')) {
+    body = await response.json();
+  } else {
+    body = await response.text();
+  }
+
+  return body;
+};
+
+/**
+ * Derives a url string to use in `fetch`
+ *
+ * @param {String} urlArg - the url
+ * @param {String} method - the method to use (GET, POST, etc.)
+ * @param {Object|String} body - the content to send
+ * @private
+ */
+const getUrl = (urlArg, method, body = {}) => {
+  const url = new URL(urlArg);
+
+  if (method.toLowerCase() === 'get') {
+    Object.entries(body).forEach(([key, value]) => {
+      url.searchParams.append(key, value);
+    });
+  }
+
+  return url.toString();
+};
+
+/**
+ * Creates an error object from the response.
+ *
+ * @param {Response} response a `fetch` `Response` object
+ * @return {module:request.HttpError} the error object derived from the `response`.
+ * @memberof module:request
+ * @private
+ */
+const createError = async (response) => {
+  const body = await getBody(response);
+
+  return new HttpError(
+    response,
+    body,
+    'The server responded with an HTTP error code.',
+  );
+};
+
+/**
+ * Creates a response object with the following keys:
+ *
+ * @param {Response} response a `fetch` `Response` object
+ * @return {module:request.ValidResponse}
+ * @memberof module:request
+ * @private
+ */
+const createResponse = async (response) => {
+  const body = await getBody(response);
+
+  return new ValidResponse(response, body);
+};
+
+/**
+ * Derives an options object to use on `fetch`, given its parameters. Handles things like `Content-Type` headers, methods, and body encoding.
+ *
+ * @param {String} method - the method to use (GET, POST, etc.)
+ * @param {Object|String} body - the content to send
+ * @param {Object} opts - the default options to use
+ * @private
+ */
+const getOptions = (method, body, opts) => {
+  const sendableOptions = { headers: {}, method, ...opts };
+
+  if (typeof body === 'undefined' || method.toLowerCase() === 'get') {
+    return sendableOptions;
+  }
+
+  const isJson = typeof body !== 'string';
+  const contentType = isJson ? 'application/json' : 'text/plain';
+
+  sendableOptions.body = isJson ? JSON.stringify(body) : body;
+
+  if (!sendableOptions.headers['Content-Type']) {
+    sendableOptions.headers['Content-Type'] = contentType;
+  }
+
+  return sendableOptions;
+};
+
+/**
+ * Make a request to a URL.
+ *
+ * @param {string} url the URL to send a request to.
+ * @param {String} [method="GET"] the HTTP method to use (GET, POST, PUT, DELETE)
+ * @param {Object|String} [body=undefined] the content of the body of the request. If it's an object, will automatically apply `JSON.stringify`; otherwise, will send it as a string. Use `undefined` to specify no message body.
+ * @param {*} [opts={}] `fetch` options. See `fetch()` init param: https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch
+ * @throws {module:request.HttpError}
+ *
+ * If the response contains an HTTP Status Code in the error range (4xx or 5xx), then `request()` will throw an `HttpError`. This can be useful to detect, for example, a `401 Unauthorized`, a `404 Not Found`, a `500 Internal Server Error`, or any other HTTP status code.
+ *
+ * This error type can be detected by checking if `error instanceof HttpError`.
+ * @throws {module:request.NetworkError}
+ *
+ * In the event of a network error, a `NetworkError` will throw. This can happen if:
+ * - the user disconnects from their WiFi network
+ * - the servers are down
+ * - the request times out
+ *
+ * In the real world, this can happen if a user travels through a tunnel, disconnecting them from their mobile network. It's an important edge case to account for.
+ *
+ * This error type can be detected by checking if `error instanceof NetworkError`.
+ * @return {Promise&lt;module:request.ValidResponse>} a promise, resolving to a valid, non-error response object.
+ * @memberof module:request
+ */
+const request = async (urlArg, method = 'GET', body = undefined, opts = {}) => {
+  const sendableOptions = getOptions(method, body, opts);
+  const url = getUrl(urlArg, method, body);
+
+  let response;
+  try {
+    response = await fetch(url, sendableOptions);
+  } catch (error) {
+    throw new NetworkError(
+      error,
+      'A network error occurred. The network connection may have been disconnected, or the service may be down.',
+    );
+  }
+
+  if (!response.ok) {
+    throw await createError(response);
+  }
+
+  return createResponse(response);
+};
+
+export default request;
+</code></pre>
+  </article>
+</section>
+
+    
+
+
+  </div>
+
+  <br class="clear">
+
+  <footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a>
+  </footer>
+
+  <script src="scripts/linenumber.js"></script>
+  <script src="scripts/pagelocation.js"></script>
+
+  
+
+</body>
+</html>
