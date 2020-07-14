@@ -17,17 +17,14 @@ import ValidResponse from './ValidResponse';
  * @memberof module:request
  * @private
  */
-const getBody = async (response) => {
+const getBody = (response) => {
   const contentType = response.headers.get('Content-Type');
 
-  let body;
   if (contentType && contentType.includes('application/json')) {
-    body = await response.json();
+    return response.json();
   } else {
-    body = await response.text();
+    return response.text();
   }
-
-  return body;
 };
 
 /**
@@ -58,13 +55,14 @@ const getUrl = (urlArg, method, body = {}) => {
  * @memberof module:request
  * @private
  */
-const createError = async (response) => {
-  const body = await getBody(response);
-
-  return new HttpError(
-    response,
-    body,
-    `The server responded with HTTP error code ${response.status}`,
+const createError = (response) => {
+  return getBody(response).then(
+    (body) =>
+      new HttpError(
+        response,
+        body,
+        `The server responded with HTTP error code ${response.status}`,
+      ),
   );
 };
 
@@ -76,10 +74,8 @@ const createError = async (response) => {
  * @memberof module:request
  * @private
  */
-const createResponse = async (response) => {
-  const body = await getBody(response);
-
-  return new ValidResponse(response, body);
+const createResponse = (response) => {
+  return getBody(response).then((body) => new ValidResponse(response, body));
 };
 
 /**
@@ -134,26 +130,28 @@ const getOptions = (method, body, opts) => {
  * @return {Promise<module:request.ValidResponse>} a promise, resolving to a valid, non-error response object.
  * @memberof module:request
  */
-const request = async (urlArg, method = 'GET', body = undefined, opts = {}) => {
+const request = (urlArg, method = 'GET', body = undefined, opts = {}) => {
   const sendableOptions = getOptions(method, body, opts);
   const url = getUrl(urlArg, method, body);
 
-  let response;
-  try {
-    response = await fetch(url, sendableOptions);
-  } catch (error) {
-    throw new NetworkError(
-      error,
-      { url, ...sendableOptions },
-      'A network error occurred. The network connection may have been disconnected, or the service may be down.',
-    );
-  }
-
-  if (!response.ok) {
-    throw await createError(response);
-  }
-
-  return createResponse(response);
+  return fetch(url, sendableOptions).then(
+    (response) => {
+      if (!response.ok) {
+        return createError(response).then((error) => Promise.reject(error));
+      } else {
+        return createResponse(response);
+      }
+    },
+    (error) => {
+      return Promise.reject(
+        new NetworkError(
+          error,
+          { url, ...sendableOptions },
+          'A network error occurred. The network connection may have been disconnected, or the service may be down.',
+        ),
+      );
+    },
+  );
 };
 
 export default request;
