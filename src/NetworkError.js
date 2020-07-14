@@ -8,12 +8,22 @@
 class NetworkError extends Error {
   /**
    * @param {Error} exception - the original error
+   * @param {object} request - the request url along with any options passed along
    * @param  {...any} args - further arguments to pass to `Error`
    */
-  constructor(exception, ...args) {
+  constructor(exception, request, ...args) {
     super(...args);
 
+    this.internalRequest = request;
     this.internalException = exception;
+  }
+
+  /**
+   * Information about the failing request, like the URL and headers
+   * @type {object}
+   */
+  get request() {
+    return this.internalRequest;
   }
 
   /**

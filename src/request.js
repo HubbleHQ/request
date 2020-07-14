@@ -64,7 +64,7 @@ const createError = async (response) => {
   return new HttpError(
     response,
     body,
-    'The server responded with an HTTP error code.',
+    `The server responded with HTTP error code ${response.status}`,
   );
 };
 
@@ -144,6 +144,7 @@ const request = async (urlArg, method = 'GET', body = undefined, opts = {}) => {
   } catch (error) {
     throw new NetworkError(
       error,
+      { url, ...sendableOptions },
       'A network error occurred. The network connection may have been disconnected, or the service may be down.',
     );
   }
