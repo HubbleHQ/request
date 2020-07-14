@@ -27,6 +27,17 @@ class NetworkError extends Error {
   }
 
   /**
+   * Get an "extra" object: a JSON-encodeable object that can be sent to Sentry
+   *
+   * @type {Object}
+   */
+  get extra() {
+    return {
+      ...this.request,
+    };
+  }
+
+  /**
    * The original exception that was thrown.
    * @type {Error}
    */
