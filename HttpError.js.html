@@ -131,6 +131,19 @@ class HttpError extends Error {
   }
 
   /**
+   * Get an "extra" object: a JSON-encodeable object that can be sent to Sentry
+   *
+   * @type {Object}
+   */
+  get extra() {
+    return {
+      body: this.body,
+      response: this.response,
+      statusCode: this.statusCode,
+    };
+  }
+
+  /**
    * The `fetch` `Response` object, which can be useful for low-level
    * operations. Note that the body stream will be locked.
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/Response}
