@@ -6,7 +6,7 @@ const url = 'http://www.example.com/some-endpoint';
 
 describe('core : helpers : request : ', () => {
   beforeEach(() => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
   });
 
   it('should default to GET requests', async () => {
