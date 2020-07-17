@@ -8,11 +8,11 @@ dev-all: dev-setup dev-build dev-run ## Set everything up and start project. You
 
 .PHONY: dev-build
 dev-build: ## Create the docker image for you dev environment.
-	time build-scripts/build-dev
+	build-scripts/build-dev
 
 .PHONY: dev-update-lockfile
 dev-update-lockfile: ## update the yarn lockfile to add any new dependencies
-	time build-scripts/runner yarn
+	build-scripts/runner yarn
 
 .PHONY: dev-run
 dev-run: ## Run a local instance of listings
