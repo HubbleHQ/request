@@ -1,4 +1,4 @@
-import "regenerator-runtime/runtime";
+import 'regenerator-runtime/runtime';
 
 // for mocking fetch requests
-global.fetch = require('jest-fetch-mock');
+require('jest-fetch-mock').enableMocks();
