@@ -10,6 +10,8 @@ services:
     volumes:
       - .:/src:delegated
       - /src/node_modules/
+      - ~/.gitconfig:/root/.gitconfig:ro
+
     ports:
       - '9004:9004'
     networks:
