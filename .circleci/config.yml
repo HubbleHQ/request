@@ -6,6 +6,9 @@ defaults: &defaults
   docker:
     # the Docker image with Cypress dependencies
     - image: circleci/node:12
+      auth:
+        username: $DOCKERHUB_USER
+        password: $DOCKERHUB_PASSWORD
       environment:
         ## this enables colors in the output
         TERM: xterm
@@ -97,13 +100,21 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - install_packages
+      - install_packages:
+          context:
+            - hubblehq-docker
       - build:
+          context:
+            - hubblehq-docker
           requires:
             - install_packages
       - unitTests:
+          context:
+            - hubblehq-docker
           requires:
             - install_packages
       - linting:
+          context:
+            - hubblehq-docker
           requires:
             - install_packages
