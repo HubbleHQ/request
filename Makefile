@@ -1,4 +1,4 @@
-export PROJECT_NAME := $(notdir $(CURDIR))
+export PROJECT_NAME := $(shell echo "$${PWD\#\#*/}")
 export COMPOSE_HTTP_TIMEOUT := 120
 
 PACKAGE_MANAGER := yarn
