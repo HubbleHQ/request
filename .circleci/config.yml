@@ -5,7 +5,7 @@ defaults: &defaults
   working_directory: ~/repo
   docker:
     # the Docker image with Cypress dependencies
-    - image: circleci/node:12
+    - image: circleci/node:14
       auth:
         username: $DOCKERHUB_USER
         password: $DOCKERHUB_PASSWORD
