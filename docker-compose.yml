@@ -19,5 +19,4 @@ services:
       - hubble-network
 networks:
   hubble-network:
-    external:
-      name: hubble-network
+    name: hubble-network
