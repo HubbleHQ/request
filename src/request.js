@@ -3,6 +3,7 @@ import 'isomorphic-unfetch';
 import HttpError from './HttpError';
 import NetworkError from './NetworkError';
 import ValidResponse from './ValidResponse';
+import httpMethod from './httpMethods';
 
 /**
  * @module request
@@ -130,7 +131,12 @@ const getOptions = (method, body, opts) => {
  * @return {Promise<module:request.ValidResponse>} a promise, resolving to a valid, non-error response object.
  * @memberof module:request
  */
-const request = (urlArg, method = 'GET', body = undefined, opts = {}) => {
+const request = (
+  urlArg,
+  method = httpMethod.GET,
+  body = undefined,
+  opts = {},
+) => {
   const sendableOptions = getOptions(method, body, opts);
   const url = getUrl(urlArg, method, body);
 
