@@ -83,6 +83,7 @@ Once your branch has been approved and merged, follow these steps in master to p
 1. In one terminal tab, run `make dev-run`
 2. Open a new tab. Run `make dev-ssh`
 3. Bump the version, using `yarn version`
-4. Push the update, and the tag, to the git repository: `git push && git push --tags`
-5. Log in to npm, using an account authorized to push to the `@hubble` namespace: `yarn login`
-6. Publish to npm: `yarn publish`
+4. Commit the version bump using version number as the commit header
+5. Push the update, and the tag, to the git repository: `git push && git push --tags`
+6. Log in to npm, using an account authorized to push to the `@hubble` namespace: `yarn login`
+7. Publish to npm: `yarn publish`
