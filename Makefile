@@ -1,5 +1,3 @@
-PACKAGE_MANAGER := yarn
-
 .PHONY: dev-all
 dev-all: dev-setup dev-build dev-run ## Set everything up and start project. You need to install heroku-docker (https://github.com/HubbleHQ/heroku-docker) for this to work
 
