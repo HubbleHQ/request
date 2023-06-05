@@ -1,0 +1,15 @@
+version: '3.5'
+
+services:
+  request_base:
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - .:/src:delegated
+      - /src/node_modules/
+      - ~/.gitconfig:/root/.gitconfig:ro
+    networks:
+      - default
+      - hubble-network
