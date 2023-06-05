@@ -1,4 +1,3 @@
-export PROJECT_NAME := $(shell echo "$${PWD\#\#*/}")
 export COMPOSE_HTTP_TIMEOUT := 120
 
 PACKAGE_MANAGER := yarn
@@ -72,10 +71,6 @@ dev-snapshots: ## Build the snapshots for the snapshot tests
 dev-docs: ## Run jsdoc
 	build-scripts/runner yarn docs:build
 	build-scripts/runner yarn docs:start -p 9004
-
-.PHONY: dev-export-node-modules
-dev-export-node-modules: ## Export the node modules so eslint and command compleation still works.
-	time build-scripts/export-node-modules
 
 .PHONY: help
 help: ## This message
