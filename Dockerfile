@@ -7,21 +7,22 @@ WORKDIR /src
 RUN apk add --no-cache git zsh
 
 FROM base AS deps
-# Install *only* the production dependencies
+
 COPY ["package.json", "yarn.*", "./"]
-RUN yarn
 
 FROM deps AS deps-dev
 RUN yarn
 
-RUN apk add --no-cache curl tar
-
 FROM deps-dev as dev
 COPY . .
+
 CMD [ "yarn", "start" ]
 
 FROM deps AS production
+
+RUN yarn --production=true
 COPY . .
+
 CMD [ "yarn", "start" ]
 
 # Set the default target. This way, if we run `docker build` without specifying

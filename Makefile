@@ -18,7 +18,7 @@ dev-run: ## Run a local instance of request
 dev-run-production: ## Run a local instance of request, built like it would be in production
 	docker compose --profile production up --build --remove-orphans
 
-.PHONY: dev-stop ## Shutdown the running container and remove any intermediate images. Usfull for when you think the container is stopped but docker doesn’t
+.PHONY: dev-stop ## Shutdown the running container and remove any intermediate images. Useful for when you think the container is stopped but docker doesn’t
 dev-stop:
 	docker compose --profile dev down --remove-orphans
 	docker compose --profile production down --remove-orphans

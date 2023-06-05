@@ -1,6 +1,13 @@
 version: '3.5'
 
 services:
+  deps:
+    build:
+      target: base # NOTE: this is the "stage" in the Dockerfile
+      context: .
+    profiles:
+      - deps
+
   dev:
     hostname: request
     extends:
