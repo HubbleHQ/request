@@ -8,7 +8,7 @@ dev-all: dev-setup dev-build dev-run ## Set everything up and start project. You
 
 .PHONY: dev-build
 dev-build: ## Create the docker image for you dev environment.
-	build-scripts/build-dev
+	time docker compose --profile dev build
 
 .PHONY: dev-update-lockfile
 dev-update-lockfile: ## update the yarn lockfile to add any new dependencies
@@ -16,15 +16,15 @@ dev-update-lockfile: ## update the yarn lockfile to add any new dependencies
 
 .PHONY: dev-run
 dev-run: ## Run a local instance of listings
-	build-scripts/start-dev
+	docker compose --profile dev up --build --remove-orphans
 
 .PHONY: dev-stop ## Shutdown the running container and remove any intermediate images. Usfull for when you think the container is stopped but docker doesn’t
 dev-stop:
-	docker-compose down
+	docker compose --profile dev down --remove-orphans
 
 .PHONY: dev-clean
 dev-clean: ## Remove all the docker containers for this project
-	docker-compose down --rmi local --volumes --remove-orphans
+	docker compose --profile dev down --rmi local --volumes
 
 .PHONY: dev-setup ## Get the env vars from Heroku, you need to install heroku-docker (https://github.com/HubbleHQ/heroku-docker) for this to work.
 dev-setup:

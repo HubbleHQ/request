@@ -1,12 +1,3 @@
 #!/usr/bin/env sh
 
-if [ -n "${HUBBLE_RUN_OUTSIDE_DOCKER}" ]; then
-  echo "Running natively"
-  $@ && exit 0
-else
-  if [ ! $(docker-compose ps $PROJECT_NAME | grep --only-matching Up) ]; then
-    time docker-compose run --rm $PROJECT_NAME "$@"
-  else
-    time docker-compose exec $PROJECT_NAME "$@"
-  fi
-fi
+time docker compose run --rm dev "$@"
