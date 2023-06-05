@@ -2,12 +2,12 @@ version: '3.5'
 
 services:
   request:
+    hostname: request
     extends:
       file: docker-compose.common.yml
       service: request_base
-    container_name: ${PROJECT_NAME?'Please set the ’PROJECT_NAME’ env var before runing docker-compose'}
     build:
-      dockerfile: Dockerfile
+      target: dev
       context: .
     ports:
       - '9004:9004'
