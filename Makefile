@@ -28,7 +28,7 @@ dev-clean: ## Remove all the docker containers for this project
 	docker compose --profile dev down --rmi local --volumes
 	docker compose --profile production down --rmi local --volumes
 
-.PHONY: dev-setup ## Get the env vars from Heroku, you need to install heroku-docker (https://github.com/HubbleHQ/heroku-docker) for this to work.
+.PHONY: dev-setup
 dev-setup:
 	build-scripts/git-hooks
 
@@ -42,7 +42,7 @@ dev-shell: ## Creates a shell in the project container, does not connect to a ru
 
 .PHONY: dev-test
 dev-test: ## Run all the tests
-	time build-scripts/runner dev test
+	time build-scripts/runner yarn test
 
 .PHONY: dev-test-coverage
 dev-test-coverage: ## Run all the tests, and generate a coverage report
