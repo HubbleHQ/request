@@ -1,14 +1,16 @@
 version: '3.5'
 
 services:
-  request:
+  dev:
     hostname: request
     extends:
       file: docker-compose.common.yml
       service: request_base
     build:
-      target: dev
+      target: dev # NOTE: this is the "stage" in the Dockerfile
       context: .
+    profiles:
+      - dev
     ports:
       - '9004:9004'
 
