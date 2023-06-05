@@ -15,9 +15,9 @@ else
   PROJECT_NAME=$(project_root)
   export PROJECT_NAME
 
-  if [ ! $(docker-compose ps "${PROJECT_NAME}" | grep --only-matching Up) ]; then
-    COMPOSE_HTTP_TIMEOUT=120 docker-compose run -T --rm "${PROJECT_NAME}" "${PACKAGE_MANAGER}" docs:build
+  if [ ! $(docker compose ps "${PROJECT_NAME}" | grep --only-matching Up) ]; then
+    COMPOSE_HTTP_TIMEOUT=120 docker compose run -T --rm "${PROJECT_NAME}" "${PACKAGE_MANAGER}" docs:build
   else
-    docker-compose exec -T "${PROJECT_NAME}" "${PACKAGE_MANAGER}" docs:build
+    docker compose exec -T "${PROJECT_NAME}" "${PACKAGE_MANAGER}" docs:build
   fi
 fi

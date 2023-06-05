@@ -14,6 +14,19 @@ services:
     ports:
       - '9004:9004'
 
+  production:
+    hostname: request
+    extends:
+      file: docker-compose.common.yml
+      service: request_base
+    build:
+      target: production # NOTE: this is the "stage" in the Dockerfile
+      context: .
+    profiles:
+      - production
+    ports:
+      - '9004:9004'
+
 networks:
   hubble-network:
     name: hubble-network
