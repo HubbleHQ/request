@@ -1,22 +1,4 @@
 #!/usr/bin/env sh
-PACKAGE_MANAGER=yarn
 [ -z $(git rev-parse --git-dir 2>/dev/null) ] && echo 'Not a git repository' && exit 1
 
-project_root() {
-  project_path=$(git rev-parse --show-toplevel)
-  echo "${project_path##*/}"
-}
-
-if [ -n "${HUBBLE_RUN_OUTSIDE_DOCKER}" ]; then
-  echo "Running natively"
-  "${PACKAGE_MANAGER}" lint-staged && exit 0
-else
-  PROJECT_NAME="$(project_root)"
-  export PROJECT_NAME
-
-  if [ ! $(docker-compose ps "${PROJECT_NAME}" | grep --only-matching Up) ]; then
-    COMPOSE_HTTP_TIMEOUT=120 docker compose run -T --rm "${PROJECT_NAME}" "${PACKAGE_MANAGER}" lint-staged
-  else
-    docker-compose exec -T "${PROJECT_NAME}" "${PACKAGE_MANAGER}" lint-staged
-  fi
-fi
+docker compose --profile dev run --rm -T dev yarn lint-staged
