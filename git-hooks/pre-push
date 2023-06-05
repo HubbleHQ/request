@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 [ -z $(git rev-parse --git-dir 2>/dev/null) ] && echo 'Not a git repository' && exit 1
 
-COMPOSE_HTTP_TIMEOUT=${COMPOSE_HTTP_TIMEOUT} docker compose --profile dev run --rm -T dev yarn docs:build
+COMPOSE_HTTP_TIMEOUT=120 docker compose --profile dev run --rm -T dev yarn docs:build
