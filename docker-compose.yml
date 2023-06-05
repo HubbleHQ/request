@@ -1,32 +1,22 @@
 version: '3.5'
-
 services:
-  dev:
-    hostname: request
-    extends:
-      file: docker-compose.common.yml
-      service: request_base
+  request:
+    container_name: ${PROJECT_NAME?'Please set the ’PROJECT_NAME’ env var before runing docker-compose'}
     build:
-      target: dev # NOTE: this is the "stage" in the Dockerfile
+      dockerfile: Dockerfile
       context: .
-    profiles:
-      - dev
-    ports:
-      - '9004:9004'
-  
-  production:
-    hostname: request
-    extends:
-      file: docker-compose.common.yml
-      service: request_base
-    build:
-      target: production # NOTE: this is the "stage" in the Dockerfile
-      context: .
-    profiles:
-      - production
-    ports:
-      - '9004:9004'
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - .:/src:delegated
+      - /src/node_modules/
+      - ~/.gitconfig:/root/.gitconfig:ro
 
+    ports:
+      - '9004:9004'
+    networks:
+      - default
+      - hubble-network
 networks:
   hubble-network:
     name: hubble-network

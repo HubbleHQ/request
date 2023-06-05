@@ -1,37 +1,30 @@
+export PROJECT_NAME := $(shell echo "$${PWD\#\#*/}")
+export COMPOSE_HTTP_TIMEOUT := 120
+
 PACKAGE_MANAGER := yarn
 
 .PHONY: dev-all
 dev-all: dev-setup dev-build dev-run ## Set everything up and start project. You need to install heroku-docker (https://github.com/HubbleHQ/heroku-docker) for this to work
 
 .PHONY: dev-build
-dev-build: ## Create the docker image for your dev environment.
-	time docker compose --profile dev build
-
-.PHONY: prod-build
-prod-build: ## Create the docker image for your production environment.
-	time docker compose --profile production build
+dev-build: ## Create the docker image for you dev environment.
+	build-scripts/build-dev
 
 .PHONY: dev-update-lockfile
 dev-update-lockfile: ## update the yarn lockfile to add any new dependencies
 	build-scripts/runner yarn
 
 .PHONY: dev-run
-dev-run: ## Run a local instance of request
-	docker compose --profile dev up --build --remove-orphans
-
-.PHONY: dev-run-production
-dev-run-production: ## Run a local instance of request, built like it would be in production
-	docker compose --profile production up --build --remove-orphans
+dev-run: ## Run a local instance of listings
+	build-scripts/start-dev
 
 .PHONY: dev-stop ## Shutdown the running container and remove any intermediate images. Usfull for when you think the container is stopped but docker doesn’t
 dev-stop:
-	docker compose --profile dev down --remove-orphans
-	docker compose --profile production down --remove-orphans
+	docker-compose down
 
 .PHONY: dev-clean
 dev-clean: ## Remove all the docker containers for this project
-	docker compose --profile dev down --rmi local --volumes
-	docker compose --profile production down --rmi local --volumes
+	docker-compose down --rmi local --volumes --remove-orphans
 
 .PHONY: dev-setup ## Get the env vars from Heroku, you need to install heroku-docker (https://github.com/HubbleHQ/heroku-docker) for this to work.
 dev-setup:
@@ -39,36 +32,40 @@ dev-setup:
 
 .PHONY: dev-ssh
 dev-ssh: ## Open a shell on the current running docker image of the project
-	docker compose exec dev sh
+	docker-compose exec $(PROJECT_NAME) bash
 
 .PHONY: dev-shell
 dev-shell: ## Creates a shell in the project container, does not connect to a running instance. Use dev-ssh for that.
-	docker compose run --rm dev sh
+	docker-compose run --rm $(PROJECT_NAME) bash
 
 .PHONY: dev-test
 dev-test: ## Run all the tests
-	time build-scripts/runner dev test
+	time build-scripts/runner $(PACKAGE_MANAGER) test
 
 .PHONY: dev-test-coverage
 dev-test-coverage: ## Run all the tests, and generate a coverage report
-	time build-scripts/runner dev test --coverage
+	time build-scripts/runner $(PACKAGE_MANAGER) test --coverage
 
 .PHONY: dev-test-watch
 dev-test-watch: ## Start Jest in watch mode (and generate coverage reports)
-	build-scripts/runner dev test --watch --coverage --changedSince=master
+	build-scripts/runner $(PACKAGE_MANAGER) test --watch --coverage --changedSince=master
 
 .PHONY: dev-lint
 dev-lint: ## Run the linter on staged files
-	build-scripts/runner dev lint
+	build-scripts/runner $(PACKAGE_MANAGER) lint
 
 .PHONY: dev-snapshots
 dev-snapshots: ## Build the snapshots for the snapshot tests
-	build-scripts/runner dev test -u ${SNAP}
+	build-scripts/runner $(PACKAGE_MANAGER) test -u ${SNAP}
 
 .PHONY: dev-docs
 dev-docs: ## Run jsdoc
 	build-scripts/runner yarn docs:build
 	build-scripts/runner yarn docs:start -p 9004
+
+.PHONY: dev-export-node-modules
+dev-export-node-modules: ## Export the node modules so eslint and command compleation still works.
+	time build-scripts/export-node-modules
 
 .PHONY: help
 help: ## This message
