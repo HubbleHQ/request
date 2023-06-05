@@ -34,11 +34,11 @@ dev-setup:
 
 .PHONY: dev-ssh
 dev-ssh: ## Open a shell on the current running docker image of the project
-	docker compose exec dev sh
+	docker compose exec dev zsh
 
 .PHONY: dev-shell
 dev-shell: ## Creates a shell in the project container, does not connect to a running instance. Use dev-ssh for that.
-	docker compose run --rm dev sh
+	docker compose run --rm deps zsh
 
 .PHONY: dev-test
 dev-test: ## Run all the tests

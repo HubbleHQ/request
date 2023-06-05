@@ -4,7 +4,7 @@ FROM node:16-alpine as base
 # Create app directory
 WORKDIR /src
 
-RUN apk add --no-cache git
+RUN apk add --no-cache git zsh
 
 FROM base AS deps
 # Install *only* the production dependencies
