@@ -3,7 +3,7 @@ FROM node:16-alpine
 
 # Create app directory
 WORKDIR /src
-RUN apk add --no-cache curl tar git bash
+RUN apk add --no-cache curl tar git
 
 COPY ["package.json", "yarn.*", "./"]
 
