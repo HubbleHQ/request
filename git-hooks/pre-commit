@@ -14,9 +14,9 @@ else
   PROJECT_NAME="$(project_root)"
   export PROJECT_NAME
 
-  if [ ! $(docker-compose ps "${PROJECT_NAME}" | grep --only-matching Up) ]; then
+  if [ ! $(docker compose ps "${PROJECT_NAME}" | grep --only-matching Up) ]; then
     COMPOSE_HTTP_TIMEOUT=120 docker compose run -T --rm "${PROJECT_NAME}" "${PACKAGE_MANAGER}" lint-staged
   else
-    docker-compose exec -T "${PROJECT_NAME}" "${PACKAGE_MANAGER}" lint-staged
+    docker compose exec -T "${PROJECT_NAME}" "${PACKAGE_MANAGER}" lint-staged
   fi
 fi

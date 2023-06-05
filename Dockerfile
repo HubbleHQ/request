@@ -9,7 +9,7 @@ RUN apk add --no-cache git
 FROM base AS deps
 # Install *only* the production dependencies
 COPY ["package.json", "yarn.*", "./"]
-RUN yarn --production
+RUN yarn
 
 FROM deps AS deps-dev
 RUN yarn
