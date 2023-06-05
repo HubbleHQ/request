@@ -1,5 +1,3 @@
-export COMPOSE_HTTP_TIMEOUT := 120
-
 PACKAGE_MANAGER := yarn
 
 .PHONY: dev-all
