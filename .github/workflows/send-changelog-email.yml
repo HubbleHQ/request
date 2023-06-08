@@ -27,7 +27,7 @@ jobs:
           username: ${{ secrets.ENG_BOT_USERNAME }}
           password: ${{ secrets.ENG_BOT_PASSWORD }}
           from: Hubble Engineering Bot 🤖
-          to: changelog@hubblehq.com
+          to: changelog@hubblehq.com,changelog-aaaajzywqhj5kfjfoo3w2hqbxe@hubblehq.slack.com
           subject: '[${{ github.event.repository.full_name }}] ${{ github.event.pull_request.title }}'
           html_body: |
             ${{ github.event.pull_request.body }}<br />
