@@ -78,7 +78,7 @@ This will generate the docs. You can view them at http://localhost:9004
 
 ### Publishing
 
-Once your branch has been approved and merged, follow these steps in master to publish:
+Once your branch has been approved and merged, follow these steps in main to publish:
 
 1. In one terminal tab, run `make dev-run`
 2. Open a new tab. Run `make dev-ssh`
