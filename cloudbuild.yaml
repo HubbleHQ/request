@@ -27,7 +27,7 @@ steps:
         --profile production \
         run \
         --rm \
-        production yarn lint:js
+        production yarn lint
     waitFor: ['Build image']
 
   - id: 'Run tests'
