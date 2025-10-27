@@ -13,7 +13,7 @@ steps:
       - -c
       - |
         docker build \
-          --target production \
+          --target dev \
           -t europe-west1-docker.pkg.dev/${PROJECT_ID}/hubblehq-docker/request \
           .
   - id: 'Run linting'
@@ -24,10 +24,10 @@ steps:
       - |
         docker compose \
         -f docker-compose.yml \
-        --profile production \
+        --profile dev \
         run \
         --rm \
-        production yarn lint
+        dev yarn lint
     waitFor: ['Build image']
 
   - id: 'Run tests'
@@ -38,10 +38,10 @@ steps:
       - |
         docker compose \
         -f docker-compose.yml \
-        --profile production \
+        --profile dev \
         run \
         --rm \
-        production yarn test
+        dev yarn test
     waitFor: ['Build image', 'Run linting']
 
 substitutions:
