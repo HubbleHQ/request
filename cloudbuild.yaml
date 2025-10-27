@@ -14,7 +14,7 @@ steps:
       - |
         docker build \
           --target production \
-          -t europe-west1-docker.pkg.dev/${PROJECT_ID}/hubblehq-docker/search-service \
+          -t europe-west1-docker.pkg.dev/${PROJECT_ID}/hubblehq-docker/request \
           .
   - id: 'Run linting'
     name: 'gcr.io/cloud-builders/docker'
@@ -41,35 +41,11 @@ steps:
         --profile production \
         run \
         --rm \
-        production yarn test src\/*
+        production yarn test
     waitFor: ['Build image', 'Run linting']
 
-  - id: 'Push to registry'
-    name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'sh'
-    args:
-      - -c
-      - docker push ${_DOCKER_TAG}
-    waitFor: ['Run tests', 'Run linting']
-
-  - id: 'Deploy to Cloud Run'
-    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:alpine'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        if [[ "$BRANCH_NAME" == "main" ]]; then
-            gcloud run deploy search-service \
-            --platform managed \
-            --region ${LOCATION} \
-            --image ${_DOCKER_TAG}
-        else
-          echo "Skipping deploy - not on main branch"
-        fi
-    waitFor: ['Push to registry']
-
 substitutions:
-  _SERVICE_NAME: search-service
+  _SERVICE_NAME: request
   _BUILD_ID_SHORT: ${BUILD_ID:0:8}
   _DOCKER_TAG: ${LOCATION}-docker.pkg.dev/${PROJECT_ID}/hubblehq-docker/${_SERVICE_NAME}
   _DOCKER_TAG_SCRIPTS: ${LOCATION}-docker.pkg.dev/${PROJECT_ID}/hubblehq-docker/${_SERVICE_NAME}-scripts
