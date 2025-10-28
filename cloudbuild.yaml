@@ -1,0 +1,56 @@
+steps:
+  - id: 'Create .env file'
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:alpine'
+    args:
+      - sh
+      - -c
+      - |
+        echo "SENTRY_DSN=''" > .env
+  - id: 'Build image'
+    name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'sh'
+    args:
+      - -c
+      - |
+        docker build \
+          --target dev \
+          -t europe-west1-docker.pkg.dev/${PROJECT_ID}/hubblehq-docker/request \
+          .
+  - id: 'Run linting'
+    name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'sh'
+    args:
+      - -c
+      - |
+        docker compose \
+        -f docker-compose.yml \
+        --profile dev \
+        run \
+        --rm \
+        dev yarn lint
+    waitFor: ['Build image']
+
+  - id: 'Run tests'
+    name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'sh'
+    args:
+      - -c
+      - |
+        docker compose \
+        -f docker-compose.yml \
+        --profile dev \
+        run \
+        --rm \
+        dev yarn test
+    waitFor: ['Build image', 'Run linting']
+
+substitutions:
+  _SERVICE_NAME: request
+  _BUILD_ID_SHORT: ${BUILD_ID:0:8}
+  _DOCKER_TAG: ${LOCATION}-docker.pkg.dev/${PROJECT_ID}/hubblehq-docker/${_SERVICE_NAME}
+  _DOCKER_TAG_SCRIPTS: ${LOCATION}-docker.pkg.dev/${PROJECT_ID}/hubblehq-docker/${_SERVICE_NAME}-scripts
+
+options:
+  dynamicSubstitutions: true
+  machineType: 'E2_HIGHCPU_8'
+  logging: CLOUD_LOGGING_ONLY

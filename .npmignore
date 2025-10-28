@@ -1,4 +1,4 @@
-/.circleci
+/cloudbuild.yaml
 /.jest
 /build-scripts
 /coverage
