@@ -4,6 +4,16 @@ FROM node:20-alpine as base
 # Create app directory
 WORKDIR /src
 
+# Configure OS to use the Yardi VPN certificate
+COPY build-scripts/ca-certs ./build-scripts/ca-certs
+RUN ./build-scripts/ca-certs/import-certs
+
+# Common env var used for CA certs
+ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+
+# Necessary for VS Code extensions in dev containers
+ENV NODE_EXTRA_CA_CERTS=/etc/ssl/certs/ca-certificates.crt
+
 RUN apk add --no-cache git zsh
 
 FROM base AS deps

@@ -31,6 +31,7 @@ dev-clean: ## Remove all the docker containers for this project
 .PHONY: dev-setup
 dev-setup:
 	build-scripts/git-hooks
+	build-scripts/ca-certs/export-certs
 
 .PHONY: dev-ssh
 dev-ssh: ## Open a shell on the current running docker image of the project
