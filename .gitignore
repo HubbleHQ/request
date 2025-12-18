@@ -9,3 +9,6 @@ node_modules
 npm-debug.*
 npm-debug.log
 package-lock.json
+
+# Root certificate chain exports
+build-scripts/ca-certs/*.pem

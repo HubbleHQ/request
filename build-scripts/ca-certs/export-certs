@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+
+# Exports the root certificates of the current host system, for use inside a
+# Docker container.
+#
+# This includes the Yardi VPN root signing certificate.
+
+set -e
+
+export_path=build-scripts/ca-certs/certs.pem
+
+if command -v security 2>&1 >/dev/null
+then
+    # macOS: `security` command allows for exporting certs
+    echo "Exporting macOS root certificate store to $export_path..."
+    security find-certificate -a -p > $export_path
+else
+    echo "Exporting certificates is unsupported on this platform."
+    exit 1
+fi
