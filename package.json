@@ -1,6 +1,6 @@
 {
   "name": "@hubble/request",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "description": "A simple, universal, no-frills networking library",
   "main": "dist/index.js",
   "repository": "https://github.com/HubbleHQ/request",
