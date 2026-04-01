@@ -1,5 +1,6 @@
 import 'isomorphic-unfetch';
 
+import AbortError from './AbortError';
 import HttpError from './HttpError';
 import NetworkError from './NetworkError';
 import ValidResponse from './ValidResponse';
@@ -137,10 +138,14 @@ const request = (
   body = undefined,
   opts = {},
 ) => {
-  const sendableOptions = getOptions(method, body, opts);
+  const controller = new AbortController();
+  const sendableOptions = getOptions(method, body, {
+    ...opts,
+    signal: controller.signal,
+  });
   const url = getUrl(urlArg, method, body);
 
-  return fetch(url, sendableOptions).then(
+  const promise = fetch(url, sendableOptions).then(
     (response) => {
       if (!response.ok) {
         return createError(response).then((error) => Promise.reject(error));
@@ -149,6 +154,16 @@ const request = (
       }
     },
     (error) => {
+      if (error.name === 'AbortError') {
+        return Promise.reject(
+          new AbortError(
+            error,
+            { url, ...sendableOptions },
+            'The request was aborted.',
+          ),
+        );
+      }
+
       return Promise.reject(
         new NetworkError(
           error,
@@ -158,6 +173,10 @@ const request = (
       );
     },
   );
+
+  promise.abort = () => controller.abort();
+
+  return promise;
 };
 
 export default request;

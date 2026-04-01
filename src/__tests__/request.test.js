@@ -1,3 +1,4 @@
+import AbortError from '../AbortError';
 import HttpError from '../HttpError';
 import request from '../request';
 import NetworkError from '../NetworkError';
@@ -441,6 +442,53 @@ describe('core : helpers : request : ', () => {
 
     it('should set the correct error type', async () => {
       await expect(request(url)).rejects.toBeInstanceOf(NetworkError);
+    });
+  });
+
+  describe('abort : ', () => {
+    it('should expose an abort method on the returned promise', () => {
+      fetch.mockResponse('sample response - value is irrelevant');
+      const req = request(url);
+      expect(typeof req.abort).toBe('function');
+    });
+
+    it('should reject with an AbortError when aborted', async () => {
+      const abortError = new DOMException(
+        'The user aborted a request.',
+        'AbortError',
+      );
+      fetch.mockReject(abortError);
+
+      const req = request(url);
+      req.abort();
+
+      await expect(req).rejects.toBeInstanceOf(AbortError);
+    });
+
+    it('should include the exception on the AbortError', async () => {
+      const abortError = new DOMException(
+        'The user aborted a request.',
+        'AbortError',
+      );
+      fetch.mockReject(abortError);
+
+      const req = request(url);
+      req.abort();
+
+      await expect(req).rejects.toHaveProperty('exception', abortError);
+    });
+
+    it('should not throw a NetworkError when aborted', async () => {
+      const abortError = new DOMException(
+        'The user aborted a request.',
+        'AbortError',
+      );
+      fetch.mockReject(abortError);
+
+      const req = request(url);
+      req.abort();
+
+      await expect(req).rejects.not.toBeInstanceOf(NetworkError);
     });
   });
 });

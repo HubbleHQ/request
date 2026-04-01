@@ -1,4 +1,5 @@
 export { default } from './request';
+export { default as AbortError } from './AbortError';
 export { default as HttpError } from './HttpError';
 export { default as NetworkError } from './NetworkError';
 export { default as method } from './httpMethods';
