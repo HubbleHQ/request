@@ -86,6 +86,5 @@ Once your branch has been approved and merged, follow these steps from `main` to
 4. Bump the version — this will update `package.json` and automatically create a commit and tag: `yarn version`
 5. If the remote has received commits since the container was built, rebase on top of them: `git pull --rebase`
 6. Push the commit and tag to the repository: `git push && git push --tags`
-7. Build the distributable: `yarn build`
-8. Log in to npm using an account authorised to publish to the `@hubble` namespace: `yarn login`
-9. Publish to npm: `yarn publish`
+7. Log in to npm using an account authorised to publish to the `@hubble` namespace: `yarn login`
+8. Publish to npm: `yarn publish` (this will automatically build `dist` before publishing)

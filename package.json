@@ -12,9 +12,10 @@
     "docs:publish": "yarn docs:build && gh-pages -d ./docs",
     "docs:start": "serve ./docs",
     "format": "prettier \"./src/**/*.{js,json}\" --write",
-    "lint": "yarn lint:eslint && yarn lint:format",
     "lint:eslint": "eslint .",
     "lint:format": "prettier \"./src/**/*.{js,json}\" --check",
+    "lint": "yarn lint:eslint && yarn lint:format",
+    "prepublishOnly": "yarn build",
     "start": "yarn build --watch",
     "test": "jest"
   },
