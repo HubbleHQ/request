@@ -78,12 +78,14 @@ This will generate the docs. You can view them at http://localhost:9004
 
 ### Publishing
 
-Once your branch has been approved and merged, follow these steps in main to publish:
+Once your branch has been approved and merged, follow these steps from `main` to publish:
 
-1. In one terminal tab, run `make dev-run`
-2. Open a new tab. Run `make dev-ssh`
-3. Bump the version, using `yarn version`
-4. Commit the version bump using version number as the commit header
-5. Push the update, and the tag, to the git repository: `git push && git push --tags`
-6. Log in to npm, using an account authorized to push to the `@hubble` namespace: `yarn login`
-7. Publish to npm: `yarn publish`
+1. Ensure your local `main` is up to date: `git pull`
+2. In one terminal tab, start the dev container: `make dev-run`
+3. In a new tab, open a shell in the running container: `make dev-ssh`
+4. Bump the version — this will update `package.json` and automatically create a commit and tag: `yarn version`
+5. If the remote has received commits since the container was built, rebase on top of them: `git pull --rebase`
+6. Push the commit and tag to the repository: `git push && git push --tags`
+7. Build the distributable: `yarn build`
+8. Log in to npm using an account authorised to publish to the `@hubble` namespace: `yarn login`
+9. Publish to npm: `yarn publish`
