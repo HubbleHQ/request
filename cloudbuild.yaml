@@ -44,6 +44,20 @@ steps:
         dev yarn test
     waitFor: ['Build image', 'Run linting']
 
+  - id: 'Verify package contents'
+    name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'sh'
+    args:
+      - -c
+      - |
+        docker compose \
+        -f docker-compose.yml \
+        --profile dev \
+        run \
+        --rm \
+        dev sh -c "yarn pack --filename /tmp/test-package.tgz && tar -tzf /tmp/test-package.tgz | grep -q 'dist/' && echo 'dist/ found in package' || (echo 'ERROR: dist/ missing from package' && exit 1)"
+    waitFor: ['Build image']
+
 substitutions:
   _SERVICE_NAME: request
   _BUILD_ID_SHORT: ${BUILD_ID:0:8}
